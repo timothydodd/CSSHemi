@@ -5,13 +5,17 @@ This library is used to query HTML elements out of a string using standard CSS s
 
 The core elements of this library use string extensions.  
 
-Example:
+###Example:
 
 ```C#
 string html = "<div><a class='link' href='www.google.com'>Test</a></div>"
 
-var result = html.Query("a[class]").First();
+string result = html.Query("a[class]").First();
 
 ```
 
+###Results:
 
+```C#
+"<a class='link' href='www.google.com'>Test</a>"
+```
