@@ -154,7 +154,7 @@ namespace HTMLScrape
 
 
         }
-        public static string Clean(this string st)
+        public static string RemoveWhiteSpace(this string st)
         {
             if (string.IsNullOrWhiteSpace(st))
                 return "";

@@ -33,7 +33,7 @@ namespace HTMLScrape
 
             //   myReq.Headers.Add("Accept-Encoding: gzip");
             myReq.ContentType = "application/x-www-form-urlencoded";
-            myReq.ContentLength = postData.Length;`
+            myReq.ContentLength = postData.Length;
             myReq.KeepAlive = true;
             //myReq.Proxy = null;
             if (config != null)
