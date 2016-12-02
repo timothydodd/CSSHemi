@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0" Name="txtUrl" KeyUp="TxtUrl_OnKeyUp">https://en.wikipedia.org/wiki/Main_Page</TextBox>
-        <TextBox Grid.Row="1" Name="txtCSS" TextChanged="TxtCSS_OnTextChanged">a[class]</TextBox>
+        <TextBox Grid.Row="1" Name="txtCSS" TextChanged="TxtCSS_OnTextChanged">a[class][href]:Contains("go")</TextBox>
         <RichTextBox Grid.Row="2" Name="txtHTML" VerticalScrollBarVisibility="Auto"></RichTextBox>
         <Border Grid.Row="3" Background="Gray"><TextBlock Name="txtTime" HorizontalAlignment="Right"></TextBlock></Border>
     </Grid>

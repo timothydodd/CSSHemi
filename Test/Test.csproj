@@ -96,9 +96,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSSHemi\HTMLScrape.csproj">
+    <ProjectReference Include="..\CSSHemi\CSSHemi.csproj">
       <Project>{3a02d96b-0d16-426f-9ab9-1a0b062f4a0f}</Project>
-      <Name>HTMLScrape</Name>
+      <Name>CSSHemi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

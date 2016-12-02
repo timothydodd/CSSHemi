@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTMLScrape", "HTMLScrape.csproj", "{3A02D96B-0D16-426F-9AB9-1A0B062F4A0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSHemi", "CSSHemi.csproj", "{3A02D96B-0D16-426F-9AB9-1A0B062F4A0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\Test\Test.csproj", "{914450F7-8495-4239-A0ED-08BC37CFBA40}"
 EndProject

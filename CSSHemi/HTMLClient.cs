@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace HTMLScrape
@@ -36,7 +33,7 @@ namespace HTMLScrape
 
             //   myReq.Headers.Add("Accept-Encoding: gzip");
             myReq.ContentType = "application/x-www-form-urlencoded";
-            myReq.ContentLength = postData.Length;
+            myReq.ContentLength = postData.Length;`
             myReq.KeepAlive = true;
             //myReq.Proxy = null;
             if (config != null)
