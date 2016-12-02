@@ -1,7 +1,9 @@
 # CSSHemi
 C# CSS Query Library
 
-This library is used to query HTML elements using the standard CSS similar to how JQuery works.
+This library is used to query HTML elements out of a string using standard CSS selectors.
+
+The core elements of this library use string extensions.  
 
 Example:
 
