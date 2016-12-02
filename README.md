@@ -5,9 +5,11 @@ This library is used to query HTML elements using the standard CSS similar to ho
 
 Example:
 
+```C#
 string html = "<div><a class='link' href='www.google.com'>Test</a></div>"
 
-
 var result = html.Query("a[class]").First();
+
+```
 
 
