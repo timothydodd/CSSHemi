@@ -86,17 +86,18 @@ namespace HTMLScrape
 
         public static string GetPage(CookieContainer myCookie, string url, Action<HttpWebRequest> config = null)
         {
-            try
-            {
+           
+
                 HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
                 request.UserAgent =
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36";
-                request.ContentType = "application/x-www-form-urlencoded";
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
+                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
                 request.Method = "GET";
                 //request.Proxy = null;
                 request.AllowAutoRedirect = true;
-                request.CookieContainer = myCookie;
-                request.KeepAlive = true;
+          //    request.CookieContainer = myCookie;
+               request.KeepAlive = true;
+            request.Headers.Add("Accept-Language: en-US,en;q=0.8");
                 request.Headers.Add("Accept-Encoding: gzip");
                 if (config != null)
                 {
@@ -118,6 +119,9 @@ namespace HTMLScrape
                 string responseStr = string.Empty;
                 if (res == null)
                     return responseStr;
+                var responseType = res.ContentType;
+                if(!(responseType.Contains("html") || responseType.Contains("text")))
+                     return "";
                 if (encode == "gzip")
                 {
                     try
@@ -137,6 +141,7 @@ namespace HTMLScrape
 
                     try
                     {
+                       
                         StreamReader resStream = new StreamReader(res.GetResponseStream());
 
                         responseStr = resStream.ReadToEnd();
@@ -148,17 +153,10 @@ namespace HTMLScrape
                     }
                 }
                 res.Close();
+            res.Dispose();
+         
                 return responseStr;
-            }
-            catch (WebException e)
-            {
-
-                return "";
-            }
-            catch
-            {
-                return "";
-            }
+        
 
         }
     }
