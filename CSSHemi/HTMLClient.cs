@@ -95,7 +95,7 @@ namespace HTMLScrape
                 request.Method = "GET";
                 //request.Proxy = null;
                 request.AllowAutoRedirect = true;
-          //    request.CookieContainer = myCookie;
+              request.CookieContainer = myCookie;
                request.KeepAlive = true;
             request.Headers.Add("Accept-Language: en-US,en;q=0.8");
                 request.Headers.Add("Accept-Encoding: gzip");
@@ -120,8 +120,8 @@ namespace HTMLScrape
                 if (res == null)
                     return responseStr;
                 var responseType = res.ContentType;
-                if(!(responseType.Contains("html") || responseType.Contains("text")))
-                     return "";
+                //if(!(responseType.Contains("html") || responseType.Contains("text")))
+                //     return "";
                 if (encode == "gzip")
                 {
                     try

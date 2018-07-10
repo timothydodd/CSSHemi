@@ -54,7 +54,14 @@ namespace HTMLScrape
                         attribute = "id";
                     else if (chr == ':')
                     {
-                        int x = i + 1;
+                      if (!string.IsNullOrEmpty(value))
+                      {
+                        Values.Add(new ElementAttribute() {Name = attribute, Value = value});
+                        attribute = "";
+                        value = "";
+                      }
+
+                      int x = i + 1;
                         while (x < query.Length)
                         {
                             var chr2 = query[x];

@@ -49,12 +49,32 @@ namespace HTMLScrape
 
         public static IEnumerable<string> Query(this IEnumerable<string> data, string query)
         {
-            foreach (var item in data)
+            var qitems = query.Split(' ');
+            foreach (var d in data)
             {
-                foreach (var v in HTMLParsing.QueryHtml(item, new CSSQuery(query)))
+              foreach (var item in HTMLParsing.QueryHtml(d, new CSSQuery(qitems[0])))
+              {
+                if (qitems.Length > 1)
                 {
-                    yield return v;
+                  var c = ConcatString(qitems, 1);
+                  if (string.IsNullOrWhiteSpace(c))
+                  {
+                    yield return item;
+                  }
+                  else
+                  {
+                    foreach (var item2 in item.Query(c))
+                    {
+                      yield return item2;
+                    }
+                  }
+
                 }
+                else
+                {
+                  yield return item;
+                }
+              }
             }
 
 
