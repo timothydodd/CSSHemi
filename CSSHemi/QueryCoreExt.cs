@@ -7,7 +7,7 @@ namespace HTMLScrape
     public static class QueryCoreExt
     {
 
-
+    
         public static IEnumerable<string> Query(this string data, string query)
         {
 
@@ -206,6 +206,14 @@ namespace HTMLScrape
             }
             return r;
         }
+    }
+
+    public class stringInfo
+    {
+        public string Source { get; set; }
+        public int Start = 0;
+        public int End = -1;
+
     }
 }
 

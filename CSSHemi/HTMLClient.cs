@@ -16,10 +16,10 @@ namespace HTMLScrape
             var str = JsonConvert.SerializeObject(postData,
                 Formatting.None,jsonSettings
                );
-            return PostDATA(myCookie, URL, str, config);
+            return PostDATAS(myCookie, URL, str, config);
         }
 
-        public static string PostDATA(CookieContainer myCookie, string URL, string postData,
+        public static string PostDATAS(CookieContainer myCookie, string URL, string postData,
             Action<HttpWebRequest> config = null)
         {
             string source = "";
@@ -42,18 +42,20 @@ namespace HTMLScrape
             }
             if (postData.Length > 0)
             {
-                Stream OutStream = myReq.GetRequestStream();
 
-                try
-                {
-                    ASCIIEncoding encoder = new ASCIIEncoding();
-                    byte[] baPostData = encoder.GetBytes(postData);
-                    OutStream.Write(baPostData, 0, baPostData.Length);
-                }
-                finally
-                {
-                    OutStream.Close();
-                }
+                    Stream OutStream = myReq.GetRequestStream();
+
+                    try
+                    {
+                        ASCIIEncoding encoder = new ASCIIEncoding();
+                        byte[] baPostData = encoder.GetBytes(postData);
+                        OutStream.Write(baPostData, 0, baPostData.Length);
+                    }
+                    finally
+                    {
+                        OutStream.Close();
+                    }
+                
 
             }
             using (WebResponse response = myReq.GetResponse())
