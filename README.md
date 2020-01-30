@@ -1,7 +1,7 @@
 # CSSHemi
 C# CSS Query Library
 
-This library is used to query HTML or XML elements out of a string using standard CSS selectors.
+This library is used to extract HTML or XML elements out of a string using CSS selectors. Tuned for performance. Helps with scraping elements out of HTML.
 
 The core elements of this library use string extensions.  
 
