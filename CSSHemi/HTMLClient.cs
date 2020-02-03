@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace HTMLScrape
@@ -88,77 +90,146 @@ namespace HTMLScrape
 
         public static string GetPage(CookieContainer myCookie, string url, Action<HttpWebRequest> config = null)
         {
-           
 
-                HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
-                request.UserAgent =
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
-                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-                request.Method = "GET";
-                //request.Proxy = null;
-                request.AllowAutoRedirect = true;
-              request.CookieContainer = myCookie;
-               request.KeepAlive = true;
-            request.Headers.Add("Accept-Language: en-US,en;q=0.8");
-                request.Headers.Add("Accept-Encoding: gzip");
-                if (config != null)
+            do
+            {
+                int counter = 0;
+
+                try
                 {
-                    config(request);
-                }
-
-                HttpWebResponse res;
-
-
-                res = (HttpWebResponse) request.GetResponse();
-
-                string encode = "";
-                foreach (string bah in res.Headers)
-                {
-
-                    if (bah == "Content-Encoding")
-                        encode = res.GetResponseHeader(bah.ToString());
-                }
-                string responseStr = string.Empty;
-                if (res == null)
-                    return responseStr;
-                var responseType = res.ContentType;
-                //if(!(responseType.Contains("html") || responseType.Contains("text")))
-                //     return "";
-                if (encode == "gzip")
-                {
-                    try
+                    HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+                    request.CookieContainer = myCookie;
+                    request.Headers.Add("Accept-Encoding: gzip");
+                    using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
                     {
-                        GZipStream x = new GZipStream(res.GetResponseStream(), CompressionMode.Decompress);
-                        StreamReader resStream = new StreamReader(x);
-                        responseStr = resStream.ReadToEnd();
-                        resStream.Close();
-                    }
-                    catch
-                    {
+                      
+                        string encode = "";
+                        foreach (string bah in response.Headers)
+                        {
 
-                    }
-                }
-                else
-                {
-
-                    try
-                    {
+                            if (bah == "Content-Encoding")
+                                encode = response.GetResponseHeader(bah.ToString());
+                        }
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
                        
-                        StreamReader resStream = new StreamReader(res.GetResponseStream());
 
-                        responseStr = resStream.ReadToEnd();
-                        resStream.Close();
-                    }
-                    catch
-                    {
+                            string responseStr = string.Empty;
+              
+                            var responseType = response.ContentType;
+                            if (!(responseType.Contains("html") || responseType.Contains("text")))
+                                return "";
+                            using (var rstream = response.GetResponseStream())
+                            {
+                                if (rstream != null)
+                                {
+                                    if (encode == "gzip")
+                                    {
 
+                                        GZipStream x = new GZipStream(rstream, CompressionMode.Decompress);
+                                        StreamReader resStream = new StreamReader(x);
+                                        responseStr = resStream.ReadToEnd();
+                                        resStream.Close();
+
+
+                                    }
+                                    else
+                                    {
+
+
+
+                                        StreamReader resStream = new StreamReader(rstream);
+
+                                        responseStr = resStream.ReadToEnd();
+                                        resStream.Close();
+
+                                    }
+                                }
+
+                                return responseStr;
+                            }
+                        }
                     }
                 }
-                res.Close();
-            res.Dispose();
-         
-                return responseStr;
-        
+                catch (Exception err)
+                {
+                    
+                    Thread.Sleep(10000);
+                    counter++;
+                    if (counter > 10)
+                        return "";
+                }
+
+            } while (true);
+            //HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+            //    request.UserAgent =
+            //        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
+            //    request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+            //    request.Method = "GET";
+            //    //request.Proxy = null;
+            //    request.AllowAutoRedirect = true;
+            //  request.CookieContainer = myCookie;
+            //   request.KeepAlive = true;
+            //request.Headers.Add("Accept-Language: en-US,en;q=0.8");
+            // //   request.Headers.Add("Accept-Encoding: gzip");
+            //    if (config != null)
+            //    {
+            //        config(request);
+            //    }
+
+            //    HttpWebResponse res;
+
+
+            //    res = (HttpWebResponse) request.GetResponse();
+
+            //    string encode = "";
+            //    foreach (string bah in res.Headers)
+            //    {
+
+            //        if (bah == "Content-Encoding")
+            //            encode = res.GetResponseHeader(bah.ToString());
+            //    }
+            //    string responseStr = string.Empty;
+            //    if (res == null)
+            //        return responseStr;
+            //    var responseType = res.ContentType;
+            //    //if(!(responseType.Contains("html") || responseType.Contains("text")))
+            //    //     return "";
+            //    if (encode == "gzip")
+            //    {
+            //        try
+            //        {
+            //            GZipStream x = new GZipStream(res.GetResponseStream(), CompressionMode.Decompress);
+            //            StreamReader resStream = new StreamReader(x);
+            //            responseStr = resStream.ReadToEnd();
+            //            resStream.Close();
+            //        }
+            //        catch
+            //        {
+
+            //        }
+            //    }
+            //    else
+            //    {
+
+            //        try
+            //        {
+
+            //            StreamReader resStream = new StreamReader(res.GetResponseStream());
+
+            //            responseStr = resStream.ReadToEnd();
+            //            resStream.Close();
+            //        }
+            //        catch
+            //        {
+
+            //        }
+            //    }
+            //    res.Close();
+            //res.Dispose();
+
+            //    return responseStr;
+
 
         }
     }

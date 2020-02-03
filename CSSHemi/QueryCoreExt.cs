@@ -8,14 +8,14 @@ namespace HTMLScrape
     {
 
     
-        public static IEnumerable<string> Query(this string data, string query)
+        public static IEnumerable<string> Query(this string data, string query,bool firstlevel = false)
         {
 
 
             var items = query.Split(' ');
 
 
-            foreach (var item in HTMLParsing.QueryHtml(data, new CSSQuery(items[0])))
+            foreach (var item in HTMLParsing.QueryHtml(data, new CSSQuery(items[0]), firstlevel))
             {
                 if (items.Length > 1)
                 {

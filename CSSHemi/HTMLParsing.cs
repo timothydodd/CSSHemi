@@ -8,7 +8,7 @@ namespace HTMLScrape
     {
         //todo - more selector support
         //todo - fix attribute parsing
-        public static IEnumerable<string> QueryHtml(string txt, CSSQuery query)
+        public static IEnumerable<string> QueryHtml(string txt, CSSQuery query,bool firstlevel = false)
         {
             var builder = new StringBuilder();
 
@@ -21,7 +21,7 @@ namespace HTMLScrape
 
                 if (index >= txt.Length)
                     break;
-                if (e == query.Element || string.IsNullOrEmpty(query.Element))
+                if (e.Equals(query.Element,StringComparison.InvariantCultureIgnoreCase) || string.IsNullOrEmpty(query.Element))
                 {
                     if (Validate(builder,ref index,txt,query))
                     {
@@ -32,13 +32,19 @@ namespace HTMLScrape
 
                             if (!string.IsNullOrEmpty(item))
                                 yield return item;
-                            index++;
+                          
                         }
                         else
                         {
 
-                            yield return ParseElement(builder, txt, ref index, e);
+                            yield return ParseElement(builder, txt, ref index, e,firstlevel);
                         }
+                       
+                        //if (firstlevel)
+                        //{
+                        //  index =  FindEndofElement(builder, txt, index, query.Element);
+                        //}
+                        index++;
                     }
                 }
             }
@@ -128,7 +134,7 @@ namespace HTMLScrape
                     {
                         return word;
                     }
-                    index = data.IndexOf("-->", index, StringComparison.Ordinal);
+                    index = data.IndexOf("-->", index, StringComparison.InvariantCultureIgnoreCase);
                 }
                 else
                 {
@@ -237,7 +243,7 @@ namespace HTMLScrape
             var start = index;
             var eOut = 0;
             index += 1;
-            if (element == "img")
+            if (element.Equals("img", StringComparison.InvariantCultureIgnoreCase))
             {
                 index = txt.IndexOf(">", start, StringComparison.InvariantCultureIgnoreCase);
 
@@ -248,7 +254,7 @@ namespace HTMLScrape
                 var tag = NextElement(builder, ref index, txt, out eOut);
 
 
-                if (tag == escape)
+                if (tag.Equals(escape, StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (counter <= 0)
                     {
@@ -256,19 +262,27 @@ namespace HTMLScrape
                     }
                     counter--;
                 }
-                else if (tag == element)
+                else if (tag.Equals(element, StringComparison.InvariantCultureIgnoreCase))
                     counter++;
             }
             return -1;
         }
-        public static string ParseElement(StringBuilder builder, string txt, ref int index, string element)
+        public static string ParseElement(StringBuilder builder, string txt, ref int index, string element,bool startAtEnd = false)
         {
             var start = index;
    
             var endTag = FindEndofElement(builder, txt, index, element);
             if (endTag >= 0)
             {
-                index += 1;
+                if (startAtEnd)
+                {
+                    index += endTag +1;
+                }
+                else
+                {
+                    index += 1;
+                }
+
                 return txt.Substring(start, endTag);
             }
 
